@@ -1,0 +1,16 @@
+<div class="container">
+  <header>
+    <h1>{{ title }}</h1>
+    <button class="random-btn" (click)="onRandomPoem()">
+      🎲 Surprise Me!
+    </button>
+  </header>
+  
+  <app-search (search)="onSearch($event)"></app-search>
+  
+  <app-poem-list 
+    [poems]="poems" 
+    [loading]="loading" 
+    [error]="error">
+  </app-poem-list>
+</div>

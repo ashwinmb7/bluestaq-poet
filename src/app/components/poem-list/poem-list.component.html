@@ -1,0 +1,25 @@
+<div class="poem-list-container">
+  <div *ngIf="loading" class="loading">
+    <p>Searching for poems...</p>
+  </div>
+
+  <div *ngIf="error" class="error">
+    <p>{{ error }}</p>
+  </div>
+
+  
+
+  <div *ngIf="!loading && !error && poems.length === 0" class="no-results">
+    <p>No poems found. Try a different search.</p>
+  </div>
+
+  <div *ngIf="!loading && !error && poems.length > 0" class="poems">
+    <div *ngFor="let poem of poems" class="poem-card">
+      <h3>{{ poem.title }}</h3>
+      <p class="author">by {{ poem.author }}</p>
+      <div class="poem-lines">
+        <p *ngFor="let line of poem.lines">{{ line }}</p>
+      </div>
+    </div>
+  </div>
+</div>
