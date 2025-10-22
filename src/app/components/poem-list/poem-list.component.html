@@ -7,16 +7,63 @@
     <p>{{ error }}</p>
   </div>
 
-  
-
   <div *ngIf="!loading && !error && poems.length === 0" class="no-results">
     <p>No poems found. Try a different search.</p>
   </div>
 
-  <div *ngIf="!loading && !error && poems.length > 0" class="poems">
-    <div *ngFor="let poem of poems" class="poem-card">
-      <h3>{{ poem.title }}</h3>
-      <p class="author">by {{ poem.author }}</p>
+  <!-- Filter section -->
+  <div *ngIf="!loading && !error && poems.length > 0" class="filter-section">
+    <span class="filter-label">Filter by length:</span>
+    <div class="filter-badges">
+      <button 
+        class="filter-badge" 
+        [class.active]="lengthFilter === 'all'"
+        (click)="setLengthFilter('all')">
+        All ({{ poems.length }})
+      </button>
+      <button 
+        class="filter-badge" 
+        [class.active]="lengthFilter === 'favorites'"
+        (click)="setLengthFilter('favorites')">
+        ❤️ Favorites ({{ getFavoritePoems().length }})
+      </button>
+      <button 
+        class="filter-badge short" 
+        [class.active]="lengthFilter === 'short'"
+        (click)="setLengthFilter('short')">
+        📄 Short ({{ getShortPoems().length }})
+      </button>
+      <button 
+        class="filter-badge medium" 
+        [class.active]="lengthFilter === 'medium'"
+        (click)="setLengthFilter('medium')">
+        📃 Medium ({{ getMediumPoems().length }})
+      </button>
+      <button 
+        class="filter-badge long" 
+        [class.active]="lengthFilter === 'long'"
+        (click)="setLengthFilter('long')">
+        📜 Long ({{ getLongPoems().length }})
+      </button>
+    </div>
+  </div>
+
+  <!-- Poems display -->
+  <div *ngIf="!loading && !error && getFilteredPoems().length > 0" class="poems">
+    <div *ngFor="let poem of getFilteredPoems()" class="poem-card">
+      <div class="poem-header">
+        <div>
+          <h3>{{ poem.title }}</h3>
+          <p class="author">by {{ poem.author }}</p>
+        </div>
+        <button 
+          class="favorite-btn" 
+          (click)="toggleFavorite(poem)"
+          [class.favorited]="poem.isFavorite"
+          [attr.aria-label]="poem.isFavorite ? 'Remove from favorites' : 'Add to favorites'">
+          {{ poem.isFavorite ? '❤️' : '🤍' }}
+        </button>
+      </div>
       <div class="poem-lines">
         <p *ngFor="let line of poem.lines">{{ line }}</p>
       </div>
